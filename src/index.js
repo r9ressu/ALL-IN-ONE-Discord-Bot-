@@ -1,11 +1,19 @@
+const { File } = require('buffer');
+if (!global.File) {
+  global.File = File;
+}
+
 const app = require("express")();
 const Discord = require('discord.js');
 const chalk = require('chalk');
-require('dotenv').config({ path: require('path').resolve(__dirname, '../.env') });
 const axios = require('axios');
+require('dotenv').config({ path: require('path').resolve(__dirname, '../.env') });
+
 const webhook = require("./config/webhooks.json");
 const config = require("./config/bot.js");
+
 const webHooksArray = ['startLogs', 'shardLogs', 'errorLogs', 'dmLogs', 'voiceLogs', 'serverLogs', 'serverLogs2', 'commandLogs', 'consoleLogs', 'warnLogs', 'voiceErrorLogs', 'creditLogs', 'evalLogs', 'interactionLogs'];
+
 // Check if .env webhook_id and webhook_token are set
 if (process.env.WEBHOOK_ID && process.env.WEBHOOK_TOKEN) {
     for (const webhookName of webHooksArray) {
@@ -13,16 +21,19 @@ if (process.env.WEBHOOK_ID && process.env.WEBHOOK_TOKEN) {
         webhook[webhookName].token = process.env.WEBHOOK_TOKEN;
     }
 }
+
 console.clear();
 console.log(chalk.blue(chalk.bold(`System`)), (chalk.white(`>>`)), (chalk.green(`Starting up`)), (chalk.white(`...`)))
 console.log(`\u001b[0m`)
 console.log(chalk.blue(chalk.bold(`System`)), (chalk.white(`>>`)), chalk.red(`Version ${require(`${process.cwd()}/package.json`).version}`), (chalk.green(`loaded`)))
 console.log(`\u001b[0m`);
+
 app.get("/", (req, res) => {
     res.setHeader('Content-Type', 'text/html');
     res.send(`<iframe style="margin: 0; padding: 0;" width="100%" height="100%" src="https://uoaio.vercel.app/" frameborder="0" allowfullscreen></iframe>`);
     res.end()
 });
+
 app.listen(3000, () => console.log(chalk.blue(chalk.bold(`Server`)), (chalk.white(`>>`)), (chalk.green(`Running on`)), (chalk.red(`3000`))))
 require('./bot')
 
